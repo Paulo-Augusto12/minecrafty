@@ -1,21 +1,21 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js"
-import { getServersWithStats, generateServerSelectMenu } from "../../utils/crafty.js"
+import { getServers, generateServerSelectMenu } from "../../utils/crafty.js"
 
 async function execute(interaction) {
     await interaction.deferReply()
     try {
-        const servers = await getServersWithStats()
+        const servers = await getServers()
 
         if (!servers || servers.length === 0) {
             return interaction.editReply({ content: 'Nenhum servidor encontrado.' })
         }
 
-        const row = generateServerSelectMenu(servers, 'status')
+        const row = generateServerSelectMenu(servers, 'console_write')
 
         const embed = new EmbedBuilder()
-            .setTitle('🖥️ Servidores Crafty')
+            .setTitle('💻 Console do Servidor')
             .setColor(0x5865f2)
-            .setDescription('Selecione um servidor abaixo para ver o status detalhado')
+            .setDescription('Selecione um servidor para enviar comandos')
 
         return interaction.editReply({
             embeds: [embed],
@@ -27,11 +27,11 @@ async function execute(interaction) {
     }
 }
 
-const getServersCommand = new SlashCommandBuilder()
-    .setName("servers")
-    .setDescription("Get list of servers")
+const consoleCommand = new SlashCommandBuilder()
+    .setName("console")
+    .setDescription("Send commands to a server (Start, Stop, Custom)")
 
 export default {
-    data: getServersCommand,
+    data: consoleCommand,
     execute
 }

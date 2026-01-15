@@ -7,17 +7,23 @@ const agent = new https.Agent({
 })
 
 const apiService = axios.create({
-    baseURL: process.env.CRAFTY_BASE_URL,
     httpsAgent: agent
 })
 
 apiService.interceptors.request.use(async (config) => {
-    const fullUrl = new URL(config.url, config.baseURL)
-    console.log('API Requesting: ', fullUrl)
+    const baseURL = config.baseURL || process.env.CRAFTY_BASE_URL
+    if (!baseURL) {
+        throw new Error("CRAFTY_BASE_URL is not defined correctly.")
+    }
+    config.baseURL = baseURL
+
+    const fullUrl = new URL(config.url, baseURL)
+    console.log('API Requesting: ', fullUrl.href)
     if (!fullUrl.href.includes("/auth/login")) {
         config.headers.Authorization = `Bearer ${await getToken()}`
     }
     return config;
+}, (error) => {
 }, (error) => {
     console.error("Request failed:", error.message);
     return Promise.reject(error);

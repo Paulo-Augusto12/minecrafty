@@ -16,26 +16,35 @@ async function craftyLogin() {
 
         token = receivedToken
 
-        console.log("Received Token data ✓: ", decodedToken)
+        console.log("✓ Login realizado com sucesso")
+        console.log("Token data:", decodedToken)
+
+        return token
     }
 
+    throw new Error("Failed to get token from login response")
 }
 
 async function getToken() {
-    if (token) return token
+    if (token) {
+        return token
+    }
 
     if (!loginPromise) {
+        console.log("🔐 Fazendo login no Crafty...")
         loginPromise = craftyLogin().finally(() => {
             loginPromise = null
         })
     }
 
-    return loginPromise
+    await loginPromise
+    return token
 }
 
 async function clearToken() {
     token = ""
     loginPromise = null
+    console.log("✓ Token limpo da memória")
 }
 
 export { getToken, clearToken }
