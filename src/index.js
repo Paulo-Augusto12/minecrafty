@@ -1,12 +1,11 @@
-import { Client, Events, GatewayIntentBits } from 'discord.js';
-
 import dotenv from "dotenv"
+dotenv.config()
+
+import { Client, Events, GatewayIntentBits } from 'discord.js';
 
 import { loadCommands } from './load-commands.js';
 import { ready } from './events/ready.js';
 import { interactionHandler } from './events/interactionHandler.js';
-
-dotenv.config()
 
 console.log("Minecrafty bot is starting...")
 
