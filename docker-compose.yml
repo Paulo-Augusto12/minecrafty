@@ -17,3 +17,9 @@ services:
       - .env
 
     mem_limit: 50m
+
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
