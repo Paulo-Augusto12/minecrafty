@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  discord-bot:
+    container_name: crafty-discord-bot
+    build: .
+    restart: unless-stopped
+
+    environment:
+      - NODE_ENV=production
+      - NODE_OPTIONS=--max-old-space-size=32
+
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+    
+    env_file:
+      - .env
+
+    mem_limit: 50m

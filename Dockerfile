@@ -1,11 +1,13 @@
 FROM node:22-alpine
 
+ENV NODE_ENV=production
+
 WORKDIR /app
 
-copy package*.json ./
+COPY package*.json ./
 
-RUN npm install
+RUN npm install --omit=dev
 
-copy . .
+COPY . .
 
-CMD ["npm", "run", "dev"]
+CMD ["node", "src/index.js"]
