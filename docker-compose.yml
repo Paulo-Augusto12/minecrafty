@@ -3,6 +3,7 @@ services:
     container_name: crafty-discord-bot
     build: .
     restart: unless-stopped
+    image: crafty-discord-bot:latest
 
     environment:
       - NODE_ENV=production
